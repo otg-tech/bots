@@ -37,21 +37,22 @@ async def create_admin(telegram_id: int, username: str = None):
         
         if existing:
             print(f"User {telegram_id} already exists!")
-            existing.role = Role.ADMIN
-            existing.is_active = True
+            existing.role = Role.ADMIN.value
+            existing.is_blocked = False
             await db.commit()
             print(f"✓ Updated user {telegram_id} to ADMIN role")
+            print(f"   Name: {existing.name}")
+            print(f"   Role: {existing.role}")
         else:
             user = User(
                 telegram_id=telegram_id,
-                username=username or f"admin_{telegram_id}",
-                role=Role.ADMIN,
-                is_active=True,
-                is_registered=True
+                name=username or f"Admin {telegram_id}",
+                role=Role.ADMIN.value,
+                is_blocked=False
             )
             db.add(user)
             await db.commit()
-            print(f"✓ Created admin user: {username or f'admin_{telegram_id}'}")
+            print(f"✓ Created admin user: {username or f'Admin {telegram_id}'}")
         
         print("\nAdmin user created successfully!")
         print("You can now restart the bot and use /start command")
