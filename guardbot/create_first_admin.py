@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 # Import config to initialize DB
-from bot.config import DB_URL
+from bot.config import settings
 from database.session import init_db, get_session
 from database.models import User
 from utils.roles import Role
@@ -24,7 +24,7 @@ async def create_admin(telegram_id: int, username: str = None):
     print(f"Creating admin user with Telegram ID: {telegram_id}")
     
     # Initialize database
-    await init_db(DB_URL)
+    await init_db(settings.db_url)
     
     # Create session
     async with get_session() as db:
